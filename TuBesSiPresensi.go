@@ -63,9 +63,41 @@ func searchDataByPresent(mhs *tabMhs, log *tabLog) {
 
 }
 
-// Subprogram untuk mencari data mahasiswa berdasarkan nama menggunakan algoritma binary search
-func searchDataByStdID(mhs *tabMhs) {
-
+// Subprogram untuk mencari data mahasiswa berdasarkan NIM menggunakan algoritma binary search
+func searchDataByStdID(mhs *tabMhs, n int) {
+	var stdID string
+	var left, mid, right, found int
+	for {
+		left = 0
+		right = n - 1
+		found = -1
+		fmt.Println("Masukkan NIM mahasiswa yang ingin dicari (atau ketik 'keluar' untuk batal) : ")
+		fmt.Scan(&stdID)
+		if stdID == "keluar" {
+			fmt.Println("--------------------------------------")
+			fmt.Println("Pencarian data mahasiswa dibatalkan. Kembali ke menu utama...")
+			fmt.Println("--------------------------------------")
+			return
+		}
+		for left <= right && found == -1 {
+			mid = (left + right) / 2
+			if mhs[mid].stdID == stdID {
+				found = mid
+			} else if mhs[mid].stdID < stdID {
+				left = mid + 1
+			} else {
+				right = mid - 1
+			}
+		}
+		if found == -1 {
+			fmt.Printf("Data mahasiswa dengan NIM %s tidak ditemukan. Silakan coba kembali.\n", stdID)
+			fmt.Println("--------------------------------------")
+		} else {
+			fmt.Printf("[+] Data mahasiswa dengan NIM %s ditemukan.\n", stdID)
+			fmt.Printf("Nama : %s\nNIM : %s\nJurusan : %s\nAngkatan : %s\nIndeks Data : %d", mhs[found].name, mhs[found].stdID, mhs[found].major, mhs[found].batch, found+1)
+			fmt.Println("---------------------------------------")
+		}
+	}
 }
 
 // Subprogram untuk mengurutkan data mahasiswa berdasarkan status kehadiran menggunakan algoritma selection sort
@@ -146,7 +178,7 @@ func main() {
 			}
 		case 4:
 			fmt.Println("1. Cari Data Mahasiswa Berdasarkan Status Kehadiran")
-			fmt.Println("2. Cari Data Mahasiswa Berdasarkan Nama")
+			fmt.Println("2. Cari Data Mahasiswa Berdasarkan NIM")
 			fmt.Println("3. Kembali ke Menu Utama")
 			fmt.Print("Pilih layanan menu : ")
 			fmt.Scan(&secondOption)
@@ -157,7 +189,7 @@ func main() {
 			case 1:
 				searchDataByPresent(&mhs, &log)
 			case 2:
-				searchDataByStdID(&mhs)
+				searchDataByStdID(&mhs, x)
 			}
 		case 5:
 			fmt.Println("1. Urutkan Data Mahasiswa Berdasarkan Status Kehadiran")
