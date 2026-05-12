@@ -89,8 +89,12 @@ func main() {
 	var log tabLog
 	var x, firstOption, secondOption int
 
+	welcomeMsg := "Selamat datang di Aplikasi SiPresensi : Sistem Monitoring Presensi dan Kehadiran Mahasiswa"
 	for {
-		fmt.Println("Selamat datang di Aplikasi SiPresensi : Sistem Monitoring Presensi dan Kehadiran Mahasiswa")
+		fmt.Println("||============================================================================================||")
+		fmt.Printf("|| %-5s ||\n", welcomeMsg)
+		fmt.Println("||============================================================================================||")
+		fmt.Println("Layanan Menu Aplikasi")
 		fmt.Println("1. Kelola Data Mahasiswa")
 		fmt.Println("2. Tambah Jadwal Kuliah")
 		fmt.Println("3. Kelola Kehadiran Mahasiswa")
