@@ -72,6 +72,7 @@ func searchDataByStdID(mhs *tabMhs, n int) {
 		right = n - 1
 		found = -1
 		fmt.Println("Masukkan NIM mahasiswa yang ingin dicari (atau ketik 'keluar' untuk batal) : ")
+		fmt.Print(">> ")
 		fmt.Scan(&stdID)
 		if stdID == "keluar" {
 			fmt.Println("--------------------------------------")
@@ -97,6 +98,20 @@ func searchDataByStdID(mhs *tabMhs, n int) {
 			fmt.Printf("Nama : %s\nNIM : %s\nJurusan : %s\nAngkatan : %s\nIndeks Data : %d", mhs[found].name, mhs[found].stdID, mhs[found].major, mhs[found].batch, found+1)
 			fmt.Println("---------------------------------------")
 		}
+	}
+}
+
+// Subprogram untuk mengurutkan data mahasiswa berdasarkan NIM menggunakan algoritma selection sort untuk subprogram searchDataByStdID yang menggunakan algoritma binary search
+func sortByStdID(mhs *tabMhs, n int) {
+	var j, k, minIdx int
+	for j = 0; j < n-1; j++ {
+		minIdx = j
+		for k = j + 1; k < n; k++ {
+			if mhs[k].stdID < mhs[minIdx].stdID {
+				minIdx = k
+			}
+		}
+		mhs[j], mhs[minIdx] = mhs[minIdx], mhs[j]
 	}
 }
 
@@ -137,7 +152,7 @@ func main() {
 		fmt.Print("Pilih layanan menu : ")
 		fmt.Scan(&firstOption)
 		if firstOption == 7 {
-			fmt.Println("Terima kasih telah menggunakan Aplikasi SiPresensi : Sistem Monitoring Presensi dan Kehadiran Mahasiswa. \nSampai jumpa!")
+			fmt.Println("Terima kasih telah menggunakan Aplikasi SiPresensi : Sistem Monitoring Presensi dan Kehadiran Mahasiswa.\nSampai jumpa!")
 			return
 		}
 		switch firstOption {
@@ -189,6 +204,7 @@ func main() {
 			case 1:
 				searchDataByPresent(&mhs, &log)
 			case 2:
+				sortByStdID(&mhs, x)
 				searchDataByStdID(&mhs, x)
 			}
 		case 5:
