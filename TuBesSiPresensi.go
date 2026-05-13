@@ -141,7 +141,7 @@ func searchDataByStdID(mhs *tabMhs, n int) {
 			fmt.Println("+--------------------------------------+")
 		} else {
 			fmt.Printf("[+] Data mahasiswa dengan NIM %s ditemukan.\n", stdID)
-			fmt.Printf("Nama : %s\nNIM : %s\nJurusan : %s\nAngkatan : %s\nIndeks Data : %d", mhs[found].name, mhs[found].stdID, mhs[found].major, mhs[found].batch, found+1)
+			fmt.Printf("Nama : %s\nNIM : %s\nJurusan : %s\nAngkatan : %s\nIndeks Data : %d\n", mhs[found].name, mhs[found].stdID, mhs[found].major, mhs[found].batch, found+1)
 			fmt.Println("+---------------------------------------+")
 		}
 	}
@@ -201,10 +201,6 @@ func main() {
 		fmt.Println("\t7. Keluar")
 		fmt.Print("Pilih layanan menu : ")
 		fmt.Scan(&firstOption)
-		if firstOption == 7 {
-			fmt.Println("Terima kasih telah menggunakan Aplikasi SiPresensi : Sistem Monitoring Presensi dan Kehadiran Mahasiswa.\nSampai jumpa!")
-			return
-		}
 		switch firstOption {
 		case 1:
 			fmt.Println("1. Tambah Data Mahasiswa")
@@ -213,9 +209,6 @@ func main() {
 			fmt.Println("4. Kembali ke Menu Utama")
 			fmt.Print("Pilih layanan menu : ")
 			fmt.Scan(&secondOption)
-			if secondOption == 4 {
-				continue
-			}
 			switch secondOption {
 			case 1:
 				addMhs(&mhs, &x)
@@ -223,6 +216,8 @@ func main() {
 				updateMhs(&mhs, &x)
 			case 3:
 				deleteMhs(&mhs, &x)
+			case 4:
+				continue
 			}
 		case 2:
 			addSchedule(&schedule)
@@ -232,14 +227,13 @@ func main() {
 			fmt.Println("3. Kembali ke Menu Utama")
 			fmt.Print("Pilih layanan menu : ")
 			fmt.Scan(&secondOption)
-			if secondOption == 3 {
-				continue
-			}
 			switch secondOption {
 			case 1:
 				addLogPresent(&mhs, x, &log, y, &schedule, z)
 			case 2:
 				updateLogPresent(&mhs, &log)
+			case 3:
+				continue
 			}
 		case 4:
 			fmt.Println("1. Cari Data Mahasiswa Berdasarkan Status Kehadiran")
@@ -247,15 +241,14 @@ func main() {
 			fmt.Println("3. Kembali ke Menu Utama")
 			fmt.Print("Pilih layanan menu : ")
 			fmt.Scan(&secondOption)
-			if secondOption == 3 {
-				continue
-			}
 			switch secondOption {
 			case 1:
 				searchDataByPresent(&mhs, x, &log, y, &schedule, z)
 			case 2:
 				sortByStdID(&mhs, x)
 				searchDataByStdID(&mhs, x)
+			case 3:
+				continue
 			}
 		case 5:
 			fmt.Println("1. Urutkan Data Mahasiswa Berdasarkan Status Kehadiran")
@@ -263,17 +256,19 @@ func main() {
 			fmt.Println("3. Kembali ke Menu Utama")
 			fmt.Print("Pilih layanan menu : ")
 			fmt.Scan(&secondOption)
-			if secondOption == 3 {
-				continue
-			}
 			switch secondOption {
 			case 1:
 				sortingDataByPresent(&mhs, &log)
 			case 2:
 				sortingDataByName(&mhs)
+			case 3:
+				continue
 			}
 		case 6:
 			statisticPresent(&mhs, &log)
+		case 7:
+			fmt.Println("Terima kasih telah menggunakan Aplikasi SiPresensi : Sistem Monitoring Presensi dan Kehadiran Mahasiswa.\nSampai jumpa!")
+			return
 		}
 	}
 }
