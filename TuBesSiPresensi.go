@@ -62,7 +62,7 @@ func updateLogPresent(mhs *tabMhs, log *tabLog) {
 func searchDataByPresent(mhs *tabMhs, x int, log *tabLog, y int, sch *tabSchedule, z int) {
 	var findStatus string
 	var i, j, k int
-	var match, foundOnLog bool
+	var match, printedHeader, scheduleFound bool
 
 	for {
 		fmt.Println("Masukkan status kehadiran mahasiswa yang ingin dicari, misal Hadir/Sakit/Izin/Alpa (atau ketik 'keluar' untuk batalkan pencarian) : ")
@@ -76,13 +76,23 @@ func searchDataByPresent(mhs *tabMhs, x int, log *tabLog, y int, sch *tabSchedul
 		}
 		match = false
 		for i = 0; i < x; i++ {
-			foundOnLog = false
-			for j = 0; j < y && !foundOnLog; j++ {
+			printedHeader = false
+			for j = 0; j < y; j++ {
 				if mhs[i].stdID == log[j].stdID && log[j].status == findStatus {
 					match = true
-					foundOnLog = true
-					fmt.Printf("[+] Data mahasiswa dengan status kehadiran %s ditemukan.\n", findStatus)
-					fmt.Printf("Nama : %s\nNIM : %s\nJurusan : %s\nAngkatan : %s\nIndeks Data : %d\n", mhs[i].name, mhs[i].stdID, mhs[i].major, mhs[i].batch, i+1)
+					if !printedHeader {
+						fmt.Printf("[+] Data mahasiswa dengan status kehadiran %s ditemukan.\n", findStatus)
+						fmt.Printf("Nama : %s\nNIM : %s\nJurusan : %s\n", mhs[i].name, mhs[i].stdID, mhs[i].major)
+						fmt.Println("Tercatat pada mata kuliah : ")
+						printedHeader = true
+					}
+					scheduleFound = false
+					for k = 0; k < z && !scheduleFound; k++ {
+						if log[j].scheduleID == sch[k].classCode {
+							fmt.Printf("- %s (Kode Kelas: %s, Dosen: %s, Tanggal: %s, Jam: %02d:%02d)\n", sch[k].course, sch[k].classCode, sch[k].lecturer, sch[k].date, sch[k].jam, sch[k].menit)
+							scheduleFound = true
+						}
+					}
 				}
 			}
 		}
@@ -165,7 +175,7 @@ func main() {
 	var mhs tabMhs
 	var schedule tabSchedule
 	var log tabLog
-	var x, y, firstOption, secondOption int
+	var x, y, z, firstOption, secondOption int
 
 	x = 0 // Variabel untuk menghitung jumlah data mahasiswa yang telah dimasukkan
 	y = 0 // Variabel untuk menghitung jumlah data log kehadiran mahasiswa yang telah dimasukkan
@@ -220,7 +230,7 @@ func main() {
 			}
 			switch secondOption {
 			case 1:
-				addLogPresent(&mhs, x, &log, &y)
+				addLogPresent(&mhs, x, &log, &y, &schedule, z)
 			case 2:
 				updateLogPresent(&mhs, &log)
 			}
