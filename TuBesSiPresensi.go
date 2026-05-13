@@ -59,8 +59,38 @@ func updateLogPresent(mhs *tabMhs, log *tabLog) {
 }
 
 // Subprogram untuk mencari data mahasiswa berdasarkan status kehadiran menggunakan algoritma sequential search
-func searchDataByPresent(mhs *tabMhs, log *tabLog) {
+func searchDataByPresent(mhs *tabMhs, x int, log *tabLog, y int, sch *tabSchedule, z int) {
+	var findStatus string
+	var i, j, k int
+	var match, foundOnLog bool
 
+	for {
+		fmt.Println("Masukkan status kehadiran mahasiswa yang ingin dicari, misal Hadir/Sakit/Izin/Alpa (atau ketik 'keluar' untuk batalkan pencarian) : ")
+		fmt.Print(">> ")
+		fmt.Scan(&findStatus)
+		if findStatus == "keluar" {
+			fmt.Println("--------------------------------------")
+			fmt.Println("Pencarian data mahasiswa dibatalkan. Kembali ke menu utama...")
+			fmt.Println("--------------------------------------")
+			return
+		}
+		match = false
+		for i = 0; i < x; i++ {
+			foundOnLog = false
+			for j = 0; j < y && !foundOnLog; j++ {
+				if mhs[i].stdID == log[j].stdID && log[j].status == findStatus {
+					match = true
+					foundOnLog = true
+					fmt.Printf("[+] Data mahasiswa dengan status kehadiran %s ditemukan.\n", findStatus)
+					fmt.Printf("Nama : %s\nNIM : %s\nJurusan : %s\nAngkatan : %s\nIndeks Data : %d\n", mhs[i].name, mhs[i].stdID, mhs[i].major, mhs[i].batch, i+1)
+				}
+			}
+		}
+		if !match {
+			fmt.Printf("Data mahasiswa dengan status kehadiran %s tidak ditemukan. Silakan coba kembali.\n", findStatus)
+			fmt.Println("--------------------------------------")
+		}
+	}
 }
 
 // Subprogram untuk mencari data mahasiswa berdasarkan NIM menggunakan algoritma binary search
@@ -71,7 +101,7 @@ func searchDataByStdID(mhs *tabMhs, n int) {
 		left = 0
 		right = n - 1
 		found = -1
-		fmt.Println("Masukkan NIM mahasiswa yang ingin dicari (atau ketik 'keluar' untuk batal) : ")
+		fmt.Println("Masukkan NIM mahasiswa yang ingin dicari (atau ketik 'keluar' untuk batalkan pencarian) : ")
 		fmt.Print(">> ")
 		fmt.Scan(&stdID)
 		if stdID == "keluar" {
@@ -131,24 +161,27 @@ func statisticPresent(mhs *tabMhs, log *tabLog) {
 }
 
 func main() {
+	// Inisialisasi variabel yang akan digunakan
 	var mhs tabMhs
 	var schedule tabSchedule
 	var log tabLog
-	var x, firstOption, secondOption int
+	var x, y, firstOption, secondOption int
 
+	x = 0 // Variabel untuk menghitung jumlah data mahasiswa yang telah dimasukkan
+	y = 0 // Variabel untuk menghitung jumlah data log kehadiran mahasiswa yang telah dimasukkan
 	welcomeMsg := "Selamat datang di Aplikasi SiPresensi : Sistem Monitoring Presensi dan Kehadiran Mahasiswa"
 	for {
 		fmt.Println("||============================================================================================||")
 		fmt.Printf("|| %-5s ||\n", welcomeMsg)
 		fmt.Println("||============================================================================================||")
 		fmt.Println("Layanan Menu Aplikasi")
-		fmt.Println("1. Kelola Data Mahasiswa")
-		fmt.Println("2. Tambah Jadwal Kuliah")
-		fmt.Println("3. Kelola Kehadiran Mahasiswa")
-		fmt.Println("4. Cari Data Mahasiswa")
-		fmt.Println("5. Urutkan Data Mahasiswa")
-		fmt.Println("6. Statistik Kehadiran Mahasiswa")
-		fmt.Println("7. Keluar")
+		fmt.Println("\t1. Kelola Data Mahasiswa")
+		fmt.Println("\t2. Tambah Jadwal Kuliah")
+		fmt.Println("\t3. Kelola Kehadiran Mahasiswa")
+		fmt.Println("\t4. Cari Data Mahasiswa")
+		fmt.Println("\t5. Urutkan Data Mahasiswa")
+		fmt.Println("\t6. Statistik Kehadiran Mahasiswa")
+		fmt.Println("\t7. Keluar")
 		fmt.Print("Pilih layanan menu : ")
 		fmt.Scan(&firstOption)
 		if firstOption == 7 {
@@ -187,7 +220,7 @@ func main() {
 			}
 			switch secondOption {
 			case 1:
-				addLogPresent(&mhs, &log)
+				addLogPresent(&mhs, x, &log, &y)
 			case 2:
 				updateLogPresent(&mhs, &log)
 			}
