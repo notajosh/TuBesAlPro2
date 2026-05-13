@@ -81,7 +81,7 @@ func searchDataByPresent(mhs *tabMhs, x int, log *tabLog, y int, sch *tabSchedul
 				if mhs[i].stdID == log[j].stdID && log[j].status == findStatus {
 					match = true
 					if !printedHeader {
-						fmt.Printf("Data mahasiswa dengan status kehadiran %s ditemukan.\n", findStatus)
+						fmt.Printf("[+] Data mahasiswa dengan status kehadiran %s ditemukan.\n", findStatus)
 						fmt.Printf("Nama : %s\nNIM : %s\nJurusan : %s\n", mhs[i].name, mhs[i].stdID, mhs[i].major)
 						fmt.Println("Tercatat pada mata kuliah : ")
 						printedHeader = true
