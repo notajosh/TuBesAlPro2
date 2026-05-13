@@ -49,7 +49,7 @@ func addSchedule(schedule *tabSchedule) {
 }
 
 // Subprogram untuk menambahkan data status kehadiran mahasiswa
-func addLogPresent(mhs *tabMhs, log *tabLog) {
+func addLogPresent(mhs *tabMhs, x int, log *tabLog, y int, sch *tabSchedule, z int) {
 
 }
 
@@ -69,9 +69,9 @@ func searchDataByPresent(mhs *tabMhs, x int, log *tabLog, y int, sch *tabSchedul
 		fmt.Print(">> ")
 		fmt.Scan(&findStatus)
 		if findStatus == "keluar" {
-			fmt.Println("--------------------------------------")
+			fmt.Println("+--------------------------------------+")
 			fmt.Println("Pencarian data mahasiswa dibatalkan. Kembali ke menu utama...")
-			fmt.Println("--------------------------------------")
+			fmt.Println("+--------------------------------------+")
 			return
 		}
 		match = false
@@ -85,20 +85,26 @@ func searchDataByPresent(mhs *tabMhs, x int, log *tabLog, y int, sch *tabSchedul
 						fmt.Printf("Nama : %s\nNIM : %s\nJurusan : %s\n", mhs[i].name, mhs[i].stdID, mhs[i].major)
 						fmt.Println("Tercatat pada mata kuliah : ")
 						printedHeader = true
+						fmt.Println("+----------------------+-------------+----------------------+------------+-------+")
+						fmt.Printf("| %-20s | %-11s | %-20s | %-10s | %-5s |\n", "Nama Mata Kuliah", "Kode Kelas", "Dosen", "Tanggal", "Jam")
+						fmt.Println("+----------------------+-------------+----------------------+------------+-------+")
 					}
 					scheduleFound = false
 					for k = 0; k < z && !scheduleFound; k++ {
 						if log[j].scheduleID == sch[k].classCode {
-							fmt.Printf("- %s (Kode Kelas: %s, Dosen: %s, Tanggal: %s, Jam: %02d:%02d)\n", sch[k].course, sch[k].classCode, sch[k].lecturer, sch[k].date, sch[k].jam, sch[k].menit)
+							fmt.Printf("| %-20s | %-11s | %-20s | %-10s | %02d:%02d |\n", sch[k].course, sch[k].classCode, sch[k].lecturer, sch[k].date, sch[k].jam, sch[k].menit)
 							scheduleFound = true
 						}
 					}
 				}
 			}
+			if printedHeader {
+				fmt.Println("+----------------------+-------------+----------------------+------------+-------+")
+			}
 		}
 		if !match {
 			fmt.Printf("Data mahasiswa dengan status kehadiran %s tidak ditemukan. Silakan coba kembali.\n", findStatus)
-			fmt.Println("--------------------------------------")
+			fmt.Println("+--------------------------------------+")
 		}
 	}
 }
@@ -115,9 +121,9 @@ func searchDataByStdID(mhs *tabMhs, n int) {
 		fmt.Print(">> ")
 		fmt.Scan(&stdID)
 		if stdID == "keluar" {
-			fmt.Println("--------------------------------------")
+			fmt.Println("+--------------------------------------+")
 			fmt.Println("Pencarian data mahasiswa dibatalkan. Kembali ke menu utama...")
-			fmt.Println("--------------------------------------")
+			fmt.Println("+--------------------------------------+")
 			return
 		}
 		for left <= right && found == -1 {
@@ -132,11 +138,11 @@ func searchDataByStdID(mhs *tabMhs, n int) {
 		}
 		if found == -1 {
 			fmt.Printf("Data mahasiswa dengan NIM %s tidak ditemukan. Silakan coba kembali.\n", stdID)
-			fmt.Println("--------------------------------------")
+			fmt.Println("+--------------------------------------+")
 		} else {
 			fmt.Printf("[+] Data mahasiswa dengan NIM %s ditemukan.\n", stdID)
 			fmt.Printf("Nama : %s\nNIM : %s\nJurusan : %s\nAngkatan : %s\nIndeks Data : %d", mhs[found].name, mhs[found].stdID, mhs[found].major, mhs[found].batch, found+1)
-			fmt.Println("---------------------------------------")
+			fmt.Println("+---------------------------------------+")
 		}
 	}
 }
@@ -179,6 +185,7 @@ func main() {
 
 	x = 0 // Variabel untuk menghitung jumlah data mahasiswa yang telah dimasukkan
 	y = 0 // Variabel untuk menghitung jumlah data log kehadiran mahasiswa yang telah dimasukkan
+	z = 0 // Variabel untuk menghitung jumlah data jadwal kuliah yang telah dimasukkan
 	welcomeMsg := "Selamat datang di Aplikasi SiPresensi : Sistem Monitoring Presensi dan Kehadiran Mahasiswa"
 	for {
 		fmt.Println("||============================================================================================||")
@@ -230,7 +237,7 @@ func main() {
 			}
 			switch secondOption {
 			case 1:
-				addLogPresent(&mhs, x, &log, &y, &schedule, z)
+				addLogPresent(&mhs, x, &log, y, &schedule, z)
 			case 2:
 				updateLogPresent(&mhs, &log)
 			}
@@ -245,7 +252,7 @@ func main() {
 			}
 			switch secondOption {
 			case 1:
-				searchDataByPresent(&mhs, &log)
+				searchDataByPresent(&mhs, x, &log, y, &schedule, z)
 			case 2:
 				sortByStdID(&mhs, x)
 				searchDataByStdID(&mhs, x)
