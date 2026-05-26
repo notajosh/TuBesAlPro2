@@ -1,6 +1,11 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"os"
+	"os/exec"
+	"runtime"
+)
 
 // Pembuatan konstanta untuk jumlah mahasiswa dan log kehadiran mahasiswa
 const nMhs int = 520
@@ -65,7 +70,7 @@ func addMhs(mhs *tabMhs, x *int) {
 	fmt.Println("+--------------------------------------+")
 }
 
-//Subprogram untuk mengubah data mahasiswa
+// Subprogram untuk mengubah data mahasiswa
 func updateMhs(mhs *tabMhs, x *int) {
 	var stdID, input string
 	var left, mid, right, found int
@@ -484,6 +489,21 @@ func sortingDataByName(mhs *tabMhs) {
 // Subprogram untuk menampilkan statistik kehadiran mahasiswa
 func statisticPresent(mhs *tabMhs, log *tabLog) {
 
+}
+
+func printDataMhs(mhs *tabMhs, n int) {
+
+// Subprogram untuk membersihkan layar terminal
+func clearScreen() {
+	var cmd *exec.Cmd
+	switch runtime.GOOS {
+	case "windows":
+		cmd = exec.Command("cmd", "/c", "cls")
+	default:
+		cmd = exec.Command("clear")
+	}
+	cmd.Stdout = os.Stdout
+	cmd.Run()
 }
 
 func main() {
