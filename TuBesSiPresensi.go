@@ -352,16 +352,56 @@ func readAttendance(K tabAttendance, nK int) {
 	if nK == 0 {
 		fmt.Println("\nBelum ada data kehadiran yang tersedia untuk ditampilkan.")
 	} else {
-		fmt.Println("\n--- Data Kehadiran Mahasiswa ---")
-		fmt.Println("+-----------------+-----------------+-----------+---------+")
-		fmt.Printf("| %-15s | %-15s | %-9s | %-7s |\n", "NIM", "Kode MK", "Status", "Pertemuan")
-		fmt.Println("+-----------------+-----------------+-----------+---------+")
+		// Cari teks terpanjang di setiap kolom untuk menentukan lebar kolom yang dinamis
+		maxNim := 15    // Lebar minimal kolom NIM
+		maxSubj := 15   // Lebar minimal kolom Kode MK
+		maxStatus := 9  // Lebar minimal kolom Status
+		maxMeeting := 9 // Lebar tetap untuk kolom Pertemuan
+
 		for i := 0; i < nK; i++ {
-			fmt.Printf("| %-15s | %-15s | %-9s | %-7d |\n", K[i].StdID, K[i].SubjectCode, K[i].Status, K[i].Meeting)
+			if len(K[i].StdID) > maxNim {
+				maxNim = len(K[i].StdID)
+			}
+			if len(K[i].SubjectCode) > maxSubj {
+				maxSubj = len(K[i].SubjectCode)
+			}
+			if len(K[i].Status) > maxStatus {
+				maxStatus = len(K[i].Status)
+			}
 		}
-		fmt.Println("+-----------------+-----------------+-----------+---------+")
-		fmt.Printf("| %-45s | %-7d |\n", "Total Data Kehadiran Tercatat", nK)
-		fmt.Println("+---------------------------------------------------+-------------------------------+")
+
+		// Buat border line berdasarkan lebar kolom yang sudah dihitung
+		borderLine := fmt.Sprintf("+%s+%s+%s+%s+",
+			strings.Repeat("-", maxNim+2),
+			strings.Repeat("-", maxSubj+2),
+			strings.Repeat("-", maxStatus+2),
+			strings.Repeat("-", maxMeeting+2),
+		)
+
+		// Cetak header tabel dengan lebar kolom yang sudah dihitung
+		fmt.Println("\n--- Data Kehadiran Mahasiswa ---")
+		fmt.Println(borderLine)
+
+		// Menggunakan %-*s untuk menyuntikkan variabel ukuran kolom (maxNim, maxSubj, dll)
+		fmt.Printf("| %-*s | %-*s | %-*s | %-*s |\n",
+			maxNim, "NIM", maxSubj, "Kode MK", maxStatus, "Status", maxMeeting, "Pertemuan")
+		fmt.Println(borderLine)
+
+		for i := 0; i < nK; i++ {
+			fmt.Printf("| %-*s | %-*s | %-*s | %-*d |\n",
+				maxNim, K[i].StdID, maxSubj, K[i].SubjectCode, maxStatus, K[i].Status, maxMeeting, K[i].Meeting)
+		}
+		fmt.Println(borderLine)
+
+		// Footer dengan total data kehadiran tercatat
+		footerWidth := maxNim + maxSubj + maxStatus + 6
+		fmt.Printf("| %-*s | %-*d |\n", footerWidth, "Total Data Kehadiran Tercatat", maxMeeting, nK)
+
+		bottomBorder := fmt.Sprintf("+%s+%s+",
+			strings.Repeat("-", footerWidth+2),
+			strings.Repeat("-", maxMeeting+2),
+		)
+		fmt.Println(bottomBorder)
 	}
 }
 
