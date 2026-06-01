@@ -495,10 +495,10 @@ func addSchedule(J *tabSchedule, n *int, reader *bufio.Reader) {
 		fmt.Print("Masukkan Nama Mata Kuliah         : ")
 		J[*n].SubjectName = readStringWithSpace(reader)
 
-		fmt.Print("Masukkan Kode Dosen              : ")
+		fmt.Print("Masukkan Kode Dosen               : ")
 		J[*n].LectureCode = readStringWithSpace(reader)
 
-		fmt.Print("Masukkan Nama Dosen 				 : ")
+		fmt.Print("Masukkan Nama Dosen               : ")
 		J[*n].LectureName = readStringWithSpace(reader)
 
 		fmt.Print("Masukkan Kelas                    : ")
@@ -907,286 +907,322 @@ func main() {
 
 		switch mainOpt {
 		case 1:
-			clearScreen()
-			printAppHeader(false, "Menu Kelola Data Mahasiswa", nMhs, nSch) // Memanggil Header Mode Ringkas (false)
+			// BUNGKUSAN LOOP SUB-MENU 1
+			for {
+				clearScreen()
+				printAppHeader(false, "Menu Kelola Data Mahasiswa", nMhs, nSch)
 
-			fmt.Println("\t1. Tambah Data Mahasiswa")
-			fmt.Println("\t2. Lihat Data Mahasiswa")
-			fmt.Println("\t3. Perbarui Data Mahasiswa")
-			fmt.Println("\t4. Hapus Data Mahasiswa")
-			fmt.Println("\t0. Kembali ke Menu Utama")
-			fmt.Print("Pilih layanan menu [0-4]: ")
-			fmt.Scanln(&subOpt)
-			switch subOpt {
-			case 1:
-				addMhs(&std, &nMhs, reader)
-				pauseTerminal()
-			case 2:
-				readMhs(std, nMhs)
-				pauseTerminal()
-			case 3:
-				updateMhs(&std, nMhs, reader)
-				pauseTerminal()
-			case 4:
-				deleteMhs(&std, &nMhs)
-				pauseTerminal()
-			case 0:
-				continue
-			default:
-				fmt.Println("Menu invalid, silakan pilih menu yang tersedia.")
-				pauseTerminal()
-				continue
+				fmt.Println("\t1. Tambah Data Mahasiswa")
+				fmt.Println("\t2. Lihat Data Mahasiswa")
+				fmt.Println("\t3. Perbarui Data Mahasiswa")
+				fmt.Println("\t4. Hapus Data Mahasiswa")
+				fmt.Println("\t0. Kembali ke Menu Utama")
+				fmt.Print("Pilih layanan menu [0-4]: ")
+				fmt.Scanln(&subOpt)
+
+				// Tombol keluar dari sub-menu
+				if subOpt == 0 {
+					break
+				}
+
+				switch subOpt {
+				case 1:
+					addMhs(&std, &nMhs, reader)
+					pauseTerminal()
+				case 2:
+					readMhs(std, nMhs)
+					pauseTerminal()
+				case 3:
+					updateMhs(&std, nMhs, reader)
+					pauseTerminal()
+				case 4:
+					deleteMhs(&std, &nMhs)
+					pauseTerminal()
+				default:
+					fmt.Println("Menu invalid, silakan pilih menu yang tersedia.")
+					pauseTerminal()
+				}
 			}
+
 		case 2:
-			clearScreen()
-			printAppHeader(false, "Menu Kelola Presensi Mahasiswa", nMhs, nSch)
+			// BUNGKUSAN LOOP SUB-MENU 2
+			for {
+				clearScreen()
+				printAppHeader(false, "Menu Kelola Presensi Mahasiswa", nMhs, nSch)
 
-			fmt.Println("\t1. Catat Presensi Baru")
-			fmt.Println("\t2. Lihat Riwayat Presensi")
-			fmt.Println("\t3. Perbarui Data Presensi")
-			fmt.Println("\t0. Kembali ke Menu Utama")
-			fmt.Print("Pilih layanan menu [0-3]: ")
-			fmt.Scanln(&subOpt)
-			switch subOpt {
-			case 1:
-				markAttendance(&std, nMhs, sch, nSch, &att, &nAtt)
-				pauseTerminal()
-			case 2:
-				readAttendance(att, nAtt)
-				pauseTerminal()
-			case 3:
-				updateAttendance(&att, nAtt, &std, nMhs)
-				pauseTerminal()
-			case 0:
-				continue
-			default:
-				fmt.Println("Menu invalid, silakan pilih menu yang tersedia.")
-				pauseTerminal()
-				continue
+				fmt.Println("\t1. Catat Presensi Baru")
+				fmt.Println("\t2. Lihat Riwayat Presensi")
+				fmt.Println("\t3. Perbarui Data Presensi")
+				fmt.Println("\t0. Kembali ke Menu Utama")
+				fmt.Print("Pilih layanan menu [0-3]: ")
+				fmt.Scanln(&subOpt)
+
+				if subOpt == 0 {
+					break
+				}
+
+				switch subOpt {
+				case 1:
+					markAttendance(&std, nMhs, sch, nSch, &att, &nAtt)
+					pauseTerminal()
+				case 2:
+					readAttendance(att, nAtt)
+					pauseTerminal()
+				case 3:
+					updateAttendance(&att, nAtt, &std, nMhs)
+					pauseTerminal()
+				default:
+					fmt.Println("Menu invalid, silakan pilih menu yang tersedia.")
+					pauseTerminal()
+				}
 			}
+
 		case 3:
-			clearScreen()
-			printAppHeader(false, "Menu Kelola Jadwal Kuliah", nMhs, nSch)
+			// BUNGKUSAN LOOP SUB-MENU 3
+			for {
+				clearScreen()
+				printAppHeader(false, "Menu Kelola Jadwal Kuliah", nMhs, nSch)
 
-			fmt.Println("\t1. Tambah Jadwal Mata Kuliah")
-			fmt.Println("\t0. Kembali ke Menu Utama")
-			fmt.Print("Pilih layanan menu [0-1]: ")
-			fmt.Scanln(&subOpt)
-			switch subOpt {
-			case 1:
-				addSchedule(&sch, &nSch, reader)
-				pauseTerminal()
-			case 0:
-				continue
-			default:
-				fmt.Println("Menu invalid, silakan pilih menu yang tersedia.")
-				pauseTerminal()
-				continue
+				fmt.Println("\t1. Tambah Jadwal Mata Kuliah")
+				fmt.Println("\t0. Kembali ke Menu Utama")
+				fmt.Print("Pilih layanan menu [0-1]: ")
+				fmt.Scanln(&subOpt)
+
+				if subOpt == 0 {
+					break
+				}
+
+				switch subOpt {
+				case 1:
+					addSchedule(&sch, &nSch, reader)
+					pauseTerminal()
+				default:
+					fmt.Println("Menu invalid, silakan pilih menu yang tersedia.")
+					pauseTerminal()
+				}
 			}
+
 		case 4:
-			clearScreen()
-			printAppHeader(false, "Menu Cari Data Mahasiswa", nMhs, nSch)
+			// BUNGKUSAN LOOP SUB-MENU 4
+			for {
+				clearScreen()
+				printAppHeader(false, "Menu Cari Data Mahasiswa", nMhs, nSch)
 
-			fmt.Println("\t1. Cari berdasarkan Status Presensi")
-			fmt.Println("\t2. Cari berdasarkan NIM")
-			fmt.Println("\t0. Kembali ke Menu Utama")
-			fmt.Print("Pilih layanan menu [0-2]: ")
-			fmt.Scanln(&subOpt)
-			switch subOpt {
-			case 1:
-				var findStatus string
-				var chooseAlgorithm int
-				fmt.Print("Masukkan status presensi (Hadir/Izin/Sakit/Alpa): ")
-				fmt.Scanln(&findStatus)
+				fmt.Println("\t1. Cari berdasarkan Status Presensi")
+				fmt.Println("\t2. Cari berdasarkan NIM")
+				fmt.Println("\t0. Kembali ke Menu Utama")
+				fmt.Print("Pilih layanan menu [0-2]: ")
+				fmt.Scanln(&subOpt)
 
-				for {
-					fmt.Println("\nAlgoritma Pencarian:")
-					fmt.Println("\t1. Sequential Search")
-					fmt.Println("\t2. Binary Search (dimodifikasi untuk duplikasi)")
-					fmt.Println("\t0. Batalkan Pencarian")
-					fmt.Print("Pilih algoritma [0-2]: ")
-					fmt.Scanln(&chooseAlgorithm)
-
-					if chooseAlgorithm == 0 {
-						fmt.Println("Pencarian dibatalkan. Kembali ke menu sebelumnya.")
-						break
-					} else if chooseAlgorithm == 1 || chooseAlgorithm == 2 {
-						searchByAttendance(att, nAtt, std, nMhs, findStatus, chooseAlgorithm)
-						break
-					} else {
-						fmt.Println("\n[!] Pilihan algoritma invalid. Silakan pilih angka 0, 1, atau 2.")
-						continue
-					}
+				if subOpt == 0 {
+					break
 				}
-				pauseTerminal()
-			case 2:
-				var findStdID string
-				var chooseAlgorithm int
-				fmt.Print("Masukkan NIM mahasiswa yang dicari: ")
-				fmt.Scanln(&findStdID)
-				for {
-					fmt.Println("\nAlgoritma Pencarian:")
-					fmt.Println("\t1. Sequential Search")
-					fmt.Println("\t2. Binary Search")
-					fmt.Println("\t0. Batalkan Pencarian")
-					fmt.Print("Pilih algoritma [0-2]: ")
-					fmt.Scanln(&chooseAlgorithm)
-					if chooseAlgorithm == 0 {
-						fmt.Println("Pencarian dibatalkan. Kembali ke menu sebelumnya.")
-						break
-					} else if chooseAlgorithm == 1 || chooseAlgorithm == 2 {
-						if chooseAlgorithm == 2 {
-							sortByStdID(&std, nMhs)
-						}
-						index := searchByStdID(std, nMhs, findStdID, chooseAlgorithm)
-						if index != -1 {
-							fmt.Printf("\nData mahasiswa ditemukan:\nNama: %s\nNIM: %s\nKelas: %s\n", std[index].Name, std[index].StdID, std[index].Class)
-							fmt.Printf("Presensi ===> Hadir: %d | Izin: %d | Sakit: %d | Alpa: %d\n", std[index].TH, std[index].TI, std[index].TS, std[index].TA)
+
+				switch subOpt {
+				case 1:
+					var findStatus string
+					var chooseAlgorithm int
+					fmt.Print("Masukkan status presensi (Hadir/Izin/Sakit/Alpa): ")
+					fmt.Scanln(&findStatus)
+
+					for {
+						fmt.Println("\nAlgoritma Pencarian:")
+						fmt.Println("\t1. Sequential Search")
+						fmt.Println("\t2. Binary Search (dimodifikasi untuk duplikasi)")
+						fmt.Println("\t0. Batalkan Pencarian")
+						fmt.Print("Pilih algoritma [0-2]: ")
+						fmt.Scanln(&chooseAlgorithm)
+
+						if chooseAlgorithm == 0 {
+							fmt.Println("Pencarian dibatalkan. Kembali ke menu sebelumnya.")
+							break
+						} else if chooseAlgorithm == 1 || chooseAlgorithm == 2 {
+							searchByAttendance(att, nAtt, std, nMhs, findStatus, chooseAlgorithm)
+							break
 						} else {
-							fmt.Printf("\nData mahasiswa dengan NIM %s tidak ditemukan.\n", findStdID)
+							fmt.Println("\n[!] Pilihan algoritma invalid. Silakan pilih angka 0, 1, atau 2.")
+							continue
 						}
-						break
-					} else {
-						fmt.Println("\n[!] Pilihan algoritma invalid. Silakan pilih angka 0, 1, atau 2.")
-						continue
 					}
+					pauseTerminal()
+
+				case 2:
+					var findStdID string
+					var chooseAlgorithm int
+					fmt.Print("Masukkan NIM mahasiswa yang dicari: ")
+					fmt.Scanln(&findStdID)
+					for {
+						fmt.Println("\nAlgoritma Pencarian:")
+						fmt.Println("\t1. Sequential Search")
+						fmt.Println("\t2. Binary Search")
+						fmt.Println("\t0. Batalkan Pencarian")
+						fmt.Print("Pilih algoritma [0-2]: ")
+						fmt.Scanln(&chooseAlgorithm)
+
+						if chooseAlgorithm == 0 {
+							fmt.Println("Pencarian dibatalkan. Kembali ke menu sebelumnya.")
+							break
+						} else if chooseAlgorithm == 1 || chooseAlgorithm == 2 {
+							if chooseAlgorithm == 2 {
+								sortByStdID(&std, nMhs)
+							}
+							index := searchByStdID(std, nMhs, findStdID, chooseAlgorithm)
+							if index != -1 {
+								fmt.Printf("\nData mahasiswa ditemukan:\nNama: %s\nNIM: %s\nKelas: %s\n", std[index].Name, std[index].StdID, std[index].Class)
+								fmt.Printf("Presensi ===> Hadir: %d | Izin: %d | Sakit: %d | Alpa: %d\n", std[index].TH, std[index].TI, std[index].TS, std[index].TA)
+							} else {
+								fmt.Printf("\nData mahasiswa dengan NIM %s tidak ditemukan.\n", findStdID)
+							}
+							break
+						} else {
+							fmt.Println("\n[!] Pilihan algoritma invalid. Silakan pilih angka 0, 1, atau 2.")
+							continue
+						}
+					}
+					pauseTerminal()
+
+				default:
+					fmt.Println("Menu invalid, silakan pilih menu yang tersedia.")
+					pauseTerminal()
 				}
-				pauseTerminal()
-			case 0:
-				continue
-			default:
-				fmt.Println("Menu invalid, silakan pilih menu yang tersedia.")
-				pauseTerminal()
-				continue
 			}
+
 		case 5:
-			clearScreen()
-			printAppHeader(false, "Menu Urutkan Data Mahasiswa", nMhs, nSch)
+			// BUNGKUSAN LOOP SUB-MENU 5
+			for {
+				clearScreen()
+				printAppHeader(false, "Menu Urutkan Data Mahasiswa", nMhs, nSch)
 
-			fmt.Println("\t1. Urutkan berdasarkan Kategori Presensi")
-			fmt.Println("\t2. Urutkan berdasarkan Nama")
-			fmt.Println("\t3. Lihat Data Mahasiswa")
-			fmt.Println("\t0. Kembali ke Menu Utama")
-			fmt.Print("Pilih layanan menu [0-3]: ")
-			fmt.Scanln(&subOpt)
+				fmt.Println("\t1. Urutkan berdasarkan Kategori Presensi")
+				fmt.Println("\t2. Urutkan berdasarkan Nama")
+				fmt.Println("\t3. Lihat Data Mahasiswa")
+				fmt.Println("\t0. Kembali ke Menu Utama")
+				fmt.Print("Pilih layanan menu [0-3]: ")
+				fmt.Scanln(&subOpt)
 
-			switch subOpt {
-			case 1:
-				var metric, order, algo int
-				for {
-					fmt.Println("\nPilih Kategori Presensi yang ingin diurutkan:")
-					fmt.Println("\t1. Total Hadir (TH)")
-					fmt.Println("\t2. Total Izin (TI)")
-					fmt.Println("\t3. Total Sakit (TS)")
-					fmt.Println("\t4. Total Alpa (TA)")
-					fmt.Println("\t0. Batalkan Pengurutan")
-					fmt.Print("Pilihan [0-4]: ")
-					fmt.Scanln(&metric)
-
-					if metric == 0 {
-						fmt.Println("Pengurutan dibatalkan.")
-						break
-					} else if metric < 1 || metric > 4 {
-						fmt.Println("\n[!] Kategori invalid. Silakan ulangi.")
-						continue
-					}
-
-					fmt.Println("\nPilih Arah Urutan:")
-					fmt.Println("\t1. Ascending (Terkecil ke Terbesar)")
-					fmt.Println("\t2. Descending (Terbesar ke Terkecil)")
-					fmt.Println("\t0. Batalkan Pengurutan")
-					fmt.Print("Pilihan [0-2]: ")
-					fmt.Scanln(&order)
-
-					if order == 0 {
-						fmt.Println("Pengurutan dibatalkan.")
-						break
-					} else if order < 1 || order > 2 {
-						fmt.Println("\n[!] Arah urutan invalid. Silakan ulangi.")
-						continue
-					}
-
-					fmt.Println("\nPilih Algoritma Sorting:")
-					fmt.Println("\t1. Insertion Sort")
-					fmt.Println("\t2. Selection Sort")
-					fmt.Println("\t0. Batalkan Pengurutan")
-					fmt.Print("Pilihan [0-2]: ")
-					fmt.Scanln(&algo)
-
-					if algo == 0 {
-						fmt.Println("Pengurutan dibatalkan.")
-						break
-					} else if algo < 1 || algo > 2 {
-						fmt.Println("\n[!] Pilihan algoritma invalid. Silakan ulangi.")
-						continue
-					}
-
-					sortByAttendance(&std, nMhs, metric, order, algo)
-					fmt.Println("\nData mahasiswa berhasil diurutkan sesuai metrik presensi yang dipilih!")
+				if subOpt == 0 {
 					break
 				}
-				pauseTerminal()
 
-			case 2:
-				var order, algo int
-				for {
-					fmt.Println("\nPilih Arah Urutan Nama:")
-					fmt.Println("\t1. Ascending (A-Z)")
-					fmt.Println("\t2. Descending (Z-A)")
-					fmt.Println("\t0. Batalkan Pengurutan")
-					fmt.Print("Pilihan [0-2]: ")
-					fmt.Scanln(&order)
+				switch subOpt {
+				case 1:
+					var metric, order, algo int
+					for {
+						fmt.Println("\nPilih Kategori Presensi yang ingin diurutkan:")
+						fmt.Println("\t1. Total Hadir (TH)")
+						fmt.Println("\t2. Total Izin (TI)")
+						fmt.Println("\t3. Total Sakit (TS)")
+						fmt.Println("\t4. Total Alpa (TA)")
+						fmt.Println("\t0. Batalkan Pengurutan")
+						fmt.Print("Pilihan [0-4]: ")
+						fmt.Scanln(&metric)
 
-					if order == 0 {
-						fmt.Println("Pengurutan dibatalkan.")
+						if metric == 0 {
+							fmt.Println("Pengurutan dibatalkan.")
+							break
+						} else if metric < 1 || metric > 4 {
+							fmt.Println("\n[!] Kategori invalid. Silakan ulangi.")
+							continue
+						}
+
+						fmt.Println("\nPilih Arah Urutan:")
+						fmt.Println("\t1. Ascending (Terkecil ke Terbesar)")
+						fmt.Println("\t2. Descending (Terbesar ke Terkecil)")
+						fmt.Println("\t0. Batalkan Pengurutan")
+						fmt.Print("Pilihan [0-2]: ")
+						fmt.Scanln(&order)
+
+						if order == 0 {
+							fmt.Println("Pengurutan dibatalkan.")
+							break
+						} else if order < 1 || order > 2 {
+							fmt.Println("\n[!] Arah urutan invalid. Silakan ulangi.")
+							continue
+						}
+
+						fmt.Println("\nPilih Algoritma Sorting:")
+						fmt.Println("\t1. Insertion Sort")
+						fmt.Println("\t2. Selection Sort")
+						fmt.Println("\t0. Batalkan Pengurutan")
+						fmt.Print("Pilihan [0-2]: ")
+						fmt.Scanln(&algo)
+
+						if algo == 0 {
+							fmt.Println("Pengurutan dibatalkan.")
+							break
+						} else if algo < 1 || algo > 2 {
+							fmt.Println("\n[!] Pilihan algoritma invalid. Silakan ulangi.")
+							continue
+						}
+
+						sortByAttendance(&std, nMhs, metric, order, algo)
+						fmt.Println("\nData mahasiswa berhasil diurutkan sesuai metrik presensi yang dipilih!")
 						break
-					} else if order < 1 || order > 2 {
-						fmt.Println("\n[!] Arah urutan invalid. Silakan ulangi.")
-						continue
 					}
+					pauseTerminal()
 
-					fmt.Println("\nPilih Algoritma Sorting:")
-					fmt.Println("\t1. Insertion Sort")
-					fmt.Println("\t2. Selection Sort")
-					fmt.Println("\t0. Batalkan Pengurutan")
-					fmt.Print("Pilihan [0-2]: ")
-					fmt.Scanln(&algo)
+				case 2:
+					var order, algo int
+					for {
+						fmt.Println("\nPilih Arah Urutan Nama:")
+						fmt.Println("\t1. Ascending (A-Z)")
+						fmt.Println("\t2. Descending (Z-A)")
+						fmt.Println("\t0. Batalkan Pengurutan")
+						fmt.Print("Pilihan [0-2]: ")
+						fmt.Scanln(&order)
 
-					if algo == 0 {
-						fmt.Println("Pengurutan dibatalkan.")
+						if order == 0 {
+							fmt.Println("Pengurutan dibatalkan.")
+							break
+						} else if order < 1 || order > 2 {
+							fmt.Println("\n[!] Arah urutan invalid. Silakan ulangi.")
+							continue
+						}
+
+						fmt.Println("\nPilih Algoritma Sorting:")
+						fmt.Println("\t1. Insertion Sort")
+						fmt.Println("\t2. Selection Sort")
+						fmt.Println("\t0. Batalkan Pengurutan")
+						fmt.Print("Pilihan [0-2]: ")
+						fmt.Scanln(&algo)
+
+						if algo == 0 {
+							fmt.Println("Pengurutan dibatalkan.")
+							break
+						} else if algo < 1 || algo > 2 {
+							fmt.Println("\n[!] Pilihan algoritma invalid. Silakan ulangi.")
+							continue
+						}
+
+						sortByName(&std, nMhs, order, algo)
+						fmt.Println("\nData mahasiswa berhasil diurutkan berdasarkan nama!")
 						break
-					} else if algo < 1 || algo > 2 {
-						fmt.Println("\n[!] Pilihan algoritma invalid. Silakan ulangi.")
-						continue
 					}
+					pauseTerminal()
 
-					sortByName(&std, nMhs, order, algo)
-					fmt.Println("\nData mahasiswa berhasil diurutkan berdasarkan nama!")
-					break
+				case 3:
+					readMhs(std, nMhs)
+					pauseTerminal()
+
+				default:
+					fmt.Println("Menu invalid, silakan pilih menu yang tersedia.")
+					pauseTerminal()
 				}
-				pauseTerminal()
-			case 3:
-				readMhs(std, nMhs)
-				pauseTerminal()
-			case 0:
-				continue
-			default:
-				fmt.Println("Menu invalid, silakan pilih menu yang tersedia.")
-				pauseTerminal()
-				continue
 			}
+
 		case 6:
 			clearScreen()
 			printAppHeader(false, "Menu Statistik Presensi Mahasiswa", nMhs, nSch)
 			attendanceStatistics(std, nMhs)
 			pauseTerminal()
+
 		case 0:
 			fmt.Println("\nTerima kasih telah menggunakan Aplikasi SiPresensi. Sayonara!")
 			return
+
 		default:
 			fmt.Println("Menu invalid, silakan pilih menu yang tersedia.")
 			pauseTerminal()
-			continue
 		}
 	}
 }
