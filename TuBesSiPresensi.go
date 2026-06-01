@@ -523,6 +523,177 @@ func addSchedule(J *tabSchedule, n *int, reader *bufio.Reader) {
 	}
 }
 
+// Subprogram untuk membaca data jadwal kuliah dengan Tabel Dinamis (Auto-Resize)
+func readSchedule(J tabSchedule, n int) {
+	if n == 0 {
+		fmt.Println("\nBelum ada data jadwal yang tersedia untuk ditampilkan.")
+	} else {
+		// --- 1. LOGIKA AUTO-RESIZE: Cari Teks Terpanjang ---
+		maxSCode := 7  // Minimal lebar kolom "Kode MK"
+		maxSName := 11 // Minimal lebar kolom "Mata Kuliah"
+		maxLCode := 8  // Minimal lebar kolom "Kode Dsn"
+		maxLName := 10 // Minimal lebar kolom "Nama Dosen"
+		maxClass := 5  // Minimal lebar kolom "Kelas"
+		maxDay := 4    // Minimal lebar kolom "Hari"
+		maxTime := 5   // Minimal lebar kolom "Waktu"
+
+		for i := 0; i < n; i++ {
+			if len(J[i].SubjectCode) > maxSCode {
+				maxSCode = len(J[i].SubjectCode)
+			}
+			if len(J[i].SubjectName) > maxSName {
+				maxSName = len(J[i].SubjectName)
+			}
+			if len(J[i].LectureCode) > maxLCode {
+				maxLCode = len(J[i].LectureCode)
+			}
+			if len(J[i].LectureName) > maxLName {
+				maxLName = len(J[i].LectureName)
+			}
+			if len(J[i].Class) > maxClass {
+				maxClass = len(J[i].Class)
+			}
+			if len(J[i].Day) > maxDay {
+				maxDay = len(J[i].Day)
+			}
+			if len(J[i].Time) > maxTime {
+				maxTime = len(J[i].Time)
+			}
+		}
+
+		// --- 2. LOGIKA BORDER DINAMIS ---
+		borderLine := fmt.Sprintf("+%s+%s+%s+%s+%s+%s+%s+",
+			strings.Repeat("-", maxSCode+2), strings.Repeat("-", maxSName+2),
+			strings.Repeat("-", maxLCode+2), strings.Repeat("-", maxLName+2),
+			strings.Repeat("-", maxClass+2), strings.Repeat("-", maxDay+2),
+			strings.Repeat("-", maxTime+2),
+		)
+
+		// --- 3. CETAK TABEL ---
+		fmt.Println("\n--- Data Jadwal Kuliah ---")
+		fmt.Println(borderLine)
+		fmt.Printf("| %-*s | %-*s | %-*s | %-*s | %-*s | %-*s | %-*s |\n",
+			maxSCode, "Kode MK", maxSName, "Mata Kuliah", maxLCode, "Kode Dsn",
+			maxLName, "Nama Dosen", maxClass, "Kelas", maxDay, "Hari", maxTime, "Waktu")
+		fmt.Println(borderLine)
+
+		for i := 0; i < n; i++ {
+			fmt.Printf("| %-*s | %-*s | %-*s | %-*s | %-*s | %-*s | %-*s |\n",
+				maxSCode, J[i].SubjectCode, maxSName, J[i].SubjectName,
+				maxLCode, J[i].LectureCode, maxLName, J[i].LectureName,
+				maxClass, J[i].Class, maxDay, J[i].Day, maxTime, J[i].Time)
+		}
+		fmt.Println(borderLine)
+
+		// --- 4. FOOTER TABEL ---
+		footerWidth := maxSCode + maxSName + maxLCode + maxLName + maxClass + maxDay + 17
+		fmt.Printf("| %-*s | %-*d |\n", footerWidth, "Total Jadwal Tersedia", maxTime, n)
+		bottomBorder := fmt.Sprintf("+%s+%s+", strings.Repeat("-", footerWidth+2), strings.Repeat("-", maxTime+2))
+		fmt.Println(bottomBorder)
+	}
+}
+
+// Subprogram untuk memperbarui jadwal kuliah
+func updateSchedule(J *tabSchedule, n int, reader *bufio.Reader) {
+	if n == 0 {
+		fmt.Println("\nBelum ada data jadwal untuk diperbarui.")
+	} else {
+		var findCode, findClass string
+		found := false
+		fmt.Println("\n--- Perbarui Jadwal Kuliah ---")
+		fmt.Print("Masukkan Kode Mata Kuliah: ")
+		fmt.Scanln(&findCode)
+		fmt.Print("Masukkan Kelas: ")
+		fmt.Scanln(&findClass)
+
+		for i := 0; i < n && !found; i++ {
+			// Mencari jadwal spesifik berdasarkan Kode MK dan Kelas
+			if J[i].SubjectCode == findCode && J[i].Class == findClass {
+				found = true
+				fmt.Printf("\nJadwal ditemukan:\nMK: %s (%s)\nDosen: %s (%s)\nHari/Jam: %s / %s\n",
+					J[i].SubjectName, J[i].SubjectCode, J[i].LectureName, J[i].LectureCode, J[i].Day, J[i].Time)
+
+				fmt.Println("\nMasukkan data baru (tekan Enter tanpa mengisi untuk mempertahankan data lama):")
+
+				fmt.Print("Nama Mata Kuliah Baru : ")
+				newName := readStringWithSpace(reader)
+				if newName != "" {
+					J[i].SubjectName = newName
+				}
+
+				fmt.Print("Kode Dosen Baru       : ")
+				newLCode := readStringWithSpace(reader)
+				if newLCode != "" {
+					J[i].LectureCode = newLCode
+				}
+
+				fmt.Print("Nama Dosen Baru       : ")
+				newLName := readStringWithSpace(reader)
+				if newLName != "" {
+					J[i].LectureName = newLName
+				}
+
+				fmt.Print("Hari Baru             : ")
+				newDay := readStringWithSpace(reader)
+				if newDay != "" {
+					J[i].Day = newDay
+				}
+
+				fmt.Print("Waktu Baru            : ")
+				newTime := readStringWithSpace(reader)
+				if newTime != "" {
+					J[i].Time = newTime
+				}
+
+				fmt.Println("\nData jadwal berhasil diperbarui.")
+			}
+		}
+		if !found {
+			fmt.Printf("\nJadwal untuk MK %s di Kelas %s tidak ditemukan.\n", findCode, findClass)
+		}
+	}
+}
+
+// Subprogram untuk menghapus jadwal kuliah
+func deleteSchedule(J *tabSchedule, n *int) {
+	if *n == 0 {
+		fmt.Println("\nBelum ada data jadwal yang tersedia untuk dihapus.")
+	} else {
+		var findCode, findClass string
+		found := false
+		fmt.Println("\n--- Hapus Jadwal Kuliah ---")
+		fmt.Print("Masukkan Kode Mata Kuliah yang ingin dihapus: ")
+		fmt.Scanln(&findCode)
+		fmt.Print("Masukkan Kelas: ")
+		fmt.Scanln(&findClass)
+
+		for i := 0; i < *n && !found; i++ {
+			if J[i].SubjectCode == findCode && J[i].Class == findClass {
+				found = true
+				fmt.Printf("\nData jadwal ditemukan:\nMK: %s (%s)\nDosen: %s\nHari/Jam: %s / %s\n",
+					J[i].SubjectName, J[i].SubjectCode, J[i].LectureName, J[i].Day, J[i].Time)
+
+				fmt.Printf("\nApakah Anda yakin untuk menghapus jadwal ini? (y/n): ")
+				var confirm string
+				fmt.Scanln(&confirm)
+				if confirm == "y" || confirm == "Y" {
+					// Geser elemen array ke kiri untuk menimpa data yang dihapus
+					for j := i; j < *n-1; j++ {
+						J[j] = J[j+1]
+					}
+					*n-- // Kurangi total data jadwal
+					fmt.Println("Data jadwal berhasil dihapus.")
+				} else {
+					fmt.Println("Penghapusan jadwal dibatalkan.")
+				}
+			}
+		}
+		if !found {
+			fmt.Printf("\nData jadwal dengan Kode MK %s di Kelas %s tidak ditemukan.\n", findCode, findClass)
+		}
+	}
+}
+
 // SEARCHING
 
 // Subprogram untuk mencari data mahasiswa berdasarkan status presensi
@@ -984,8 +1155,10 @@ func main() {
 				printAppHeader(false, "Menu Kelola Jadwal Kuliah", nMhs, nSch)
 
 				fmt.Println("\t1. Tambah Jadwal Mata Kuliah")
+				fmt.Println("\t2. Lihat Jadwal Kuliah")
+				fmt.Println("\t3. Perbarui Jadwal Kuliah")
 				fmt.Println("\t0. Kembali ke Menu Utama")
-				fmt.Print("Pilih layanan menu [0-1]: ")
+				fmt.Print("Pilih layanan menu [0-3]: ")
 				fmt.Scanln(&subOpt)
 
 				if subOpt == 0 {
@@ -995,6 +1168,15 @@ func main() {
 				switch subOpt {
 				case 1:
 					addSchedule(&sch, &nSch, reader)
+					pauseTerminal()
+				case 2:
+					readSchedule(sch, nSch)
+					pauseTerminal()
+				case 3:
+					updateSchedule(&sch, nSch, reader)
+					pauseTerminal()
+				case 4:
+					deleteSchedule(&sch, &nSch)
 					pauseTerminal()
 				default:
 					fmt.Println("Menu invalid, silakan pilih menu yang tersedia.")
