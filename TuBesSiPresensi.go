@@ -11,8 +11,8 @@ import (
 
 // DEKLARASI KONSTANTA DAN TIPE DATA SERTA BENTUKAN DALAM VARIABEL GLOBAL
 
-const NMHS int = 1000
-const NSCH int = 200
+const NMHS int = 100
+const NSCH int = 50
 
 type Student struct {
 	Name, StdID, Class string
@@ -20,7 +20,7 @@ type Student struct {
 }
 
 type Schedule struct {
-	SubjectCode, SubjectName, Lecture, Class, Day, Time string
+	SubjectCode, SubjectName, LectureCode, LectureName, Class, Day, Time string
 }
 
 type Attendance struct {
@@ -69,15 +69,19 @@ func printAppHeader(isMainMenu bool, subMenuTitle string, nMhs int, nSch int) {
 		fmt.Println("||--------------------------------------------------------------------------------------------------||")
 
 		// Cetak Dashboard
+		// 1. Kalkulasi Bar dan Persentase Mahasiswa
 		mhsFilled := int((float64(nMhs) / float64(NMHS)) * 30)
 		mhsBar := strings.Repeat("■", mhsFilled) + strings.Repeat(".", 30-mhsFilled)
-		mhsText := fmt.Sprintf("Kapasitas Mahasiswa : [%s] %4d/%d Slot Terpakai", mhsBar, nMhs, NMHS)
+		mhsPercent := (float64(nMhs) / float64(NMHS)) * 100 // Hitung persentase
+		mhsText := fmt.Sprintf("Kapasitas Mahasiswa : [%s] %5.1f%% Terpakai", mhsBar, mhsPercent)
 
-		// PERBAIKAN DI SINI: Ganti NMHS menjadi NSCH untuk Jadwal
+		// 2. Kalkulasi Bar dan Persentase Jadwal
 		schFilled := int((float64(nSch) / float64(NSCH)) * 30)
 		schBar := strings.Repeat("■", schFilled) + strings.Repeat(".", 30-schFilled)
-		schText := fmt.Sprintf("Kapasitas Jadwal    : [%s] %4d/%d Slot Terpakai", schBar, nSch, NSCH)
+		schPercent := (float64(nSch) / float64(NSCH)) * 100 // Hitung persentase
+		schText := fmt.Sprintf("Kapasitas Jadwal    : [%s] %5.1f%% Terpakai", schBar, schPercent)
 
+		// 3. Cetak ke Layar
 		fmt.Printf("||    %-90s    ||\n", mhsText)
 		fmt.Printf("||    %-90s    ||\n", schText)
 		fmt.Println("||--------------------------------------------------------------------------------------------------||")
@@ -300,7 +304,7 @@ func markAttendance(M *tabStudent, nMhs int, J tabSchedule, nJ int, K *tabAttend
 			}
 		}
 		if scheduleFound {
-			fmt.Printf("Jadwal ditemukan!\nMata Kuliah: %s\nDosen: %s\nHari: %s\nJam: %s\n", J[scheduleIdx].SubjectName, J[scheduleIdx].Lecture, J[scheduleIdx].Day, J[scheduleIdx].Time)
+			fmt.Printf("Jadwal ditemukan!\nMata Kuliah: %s\nDosen: %s (%s)\nHari: %s\nJam: %s\n", J[scheduleIdx].SubjectName, J[scheduleIdx].LectureName, J[scheduleIdx].LectureCode, J[scheduleIdx].Day, J[scheduleIdx].Time)
 			fmt.Println("Masukkan status kehadiran untuk setiap mahasiswa: Hadir (H), Izin (I), Sakit (S), Alpa (A)")
 			var classFound bool = false
 			for i := 0; i < nMhs; i++ {
@@ -483,17 +487,19 @@ func updateAttendance(K *tabAttendance, nK int, M *tabStudent, nM int) {
 
 // Subprogram untuk menambahkan jadwal mata kuliah
 func addSchedule(J *tabSchedule, n *int, reader *bufio.Reader) {
-	if *n < NMHS {
+	if *n < NSCH {
 		fmt.Println("\n --- Tambah Jadwal Mata Kuliah ---")
-
 		fmt.Print("Masukkan Kode Mata Kuliah         : ")
 		J[*n].SubjectCode = readStringWithSpace(reader)
 
 		fmt.Print("Masukkan Nama Mata Kuliah         : ")
 		J[*n].SubjectName = readStringWithSpace(reader)
 
-		fmt.Print("Masukkan Nama Dosen (Boleh Spasi) : ")
-		J[*n].Lecture = readStringWithSpace(reader)
+		fmt.Print("Masukkan Kode Dosen              : ")
+		J[*n].LectureCode = readStringWithSpace(reader)
+
+		fmt.Print("Masukkan Nama Dosen 				 : ")
+		J[*n].LectureName = readStringWithSpace(reader)
 
 		fmt.Print("Masukkan Kelas                    : ")
 		J[*n].Class = readStringWithSpace(reader)

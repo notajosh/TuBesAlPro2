@@ -15,9 +15,9 @@ var dummyStudents = []Student{
 }
 
 var dummySchedules = []Schedule{
-	{SubjectCode: "CS101", SubjectName: "Algoritma dan Pemrograman", Lecture: "Dr. Tatang", Class: "IF-49-01", Day: "Senin", Time: "08:00-10:00"},
-	{SubjectCode: "CS102", SubjectName: "Struktur Data", Lecture: "Prof. Budi", Class: "IF-49-02", Day: "Selasa", Time: "10:00-12:00"},
-	{SubjectCode: "CS103", SubjectName: "Basis Data", Lecture: "Bu Rina", Class: "IF-49-03", Day: "Rabu", Time: "13:00-15:00"},
+	{SubjectCode: "CS101", SubjectName: "Algoritma dan Pemrograman", LectureCode: "TTG", LectureName: "Dr. Tatang", Class: "IF-49-01", Day: "Senin", Time: "08:00-10:00"},
+	{SubjectCode: "CS102", SubjectName: "Struktur Data", LectureCode: "BDI", LectureName: "Prof. Budi", Class: "IF-49-02", Day: "Selasa", Time: "10:00-12:00"},
+	{SubjectCode: "CS103", SubjectName: "Basis Data", LectureCode: "RNA", LectureName: "Bu Rina", Class: "IF-49-03", Day: "Rabu", Time: "13:00-15:00"},
 }
 
 // Data Log Kehadiran juga ikut diacak agar Binary Search Log (di Menu 3) bisa bekerja melakukan auto-sort
