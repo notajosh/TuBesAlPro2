@@ -1,3 +1,4 @@
+// komentar: masih dalam campuran bahasa manusia dan AI, nanti akan di update kembali
 package main
 
 import (
