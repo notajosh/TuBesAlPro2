@@ -53,7 +53,7 @@ Pastikan komputer kamu sudah terinstal **Go** (Golang). Jika belum, silakan undu
 ### Langkah-langkah Eksekusi
 1. Lakukan *clone* repositori ini ke dalam direktori lokal kamu:
    ```bash
-   git clone [https://github.com/notajosh/TuBesAlPro2.git](https://github.com/notajosh/TuBesAlPro2.git)
+   git clone https://github.com/notajosh/TuBesAlPro2.git
    ```
 2. Pindah ke dalam direktori repositori:
    ```
