@@ -41,13 +41,13 @@ type tabAttendance [NATT]Attendance // Tipe data array untuk menyimpan data pres
 
 // Subprogram untuk membersihkan layar terminal
 func clearScreen() {
-	switch runtime.GOOS {
-	case "windows":
-		cmd := exec.Command("cmd", "/c", "cls")
-		cmd.Stdout = os.Stdout
-		cmd.Run()
-	default:
-		cmd := exec.Command("clear")
+	switch runtime.GOOS { // Deteksi OS untuk menjalankan perintah clear screen yang sesuai
+	case "windows": // OS Windows
+		cmd := exec.Command("cmd", "/c", "cls") // Perintah untuk clear screen di Windows
+		cmd.Stdout = os.Stdout                  // Arahkan output perintah ke terminal
+		cmd.Run()                               // Jalankan perintah clear screen
+	default: // OS lainnya (Linux, macOS)
+		cmd := exec.Command("clear") // Perintah untuk clear screen di Linux/macOS
 		cmd.Stdout = os.Stdout
 		cmd.Run()
 	}
@@ -57,7 +57,7 @@ func clearScreen() {
 func pauseTerminal() {
 	var enter string
 	fmt.Print("Tekan Enter untuk melanjutkan...")
-	fmt.Scanln(&enter)
+	fmt.Scanln(&enter) // Menunggu input Enter dari pengguna
 }
 
 // Subprogram pembantu untuk mencetak header aplikasi
