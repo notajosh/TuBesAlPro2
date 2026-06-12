@@ -1,6 +1,6 @@
 # 🎓 SiPresensi : Sistem Monitoring Presensi dan Kehadiran Mahasiswa
 
-SiPresensi adalah aplikasi berbasis antarmuka baris perintah (*Command Line Interface* / CLI) yang dirancang untuk mengelola, mencatat, dan memantau kehadiran mahasiswa secara efisien. Aplikasi ini dibangun menggunakan bahasa pemrograman **Go (Golang)** sebagai pemenuhan Tugas Besar mata kuliah Algoritma dan Pemrograman, program studi S1 Informatika, Fakultas Informatika, Telkom University.
+SiPresensi adalah aplikasi berbasis antarmuka baris perintah (*Command Line Interface* / CLI) yang dirancang untuk mengelola, mencatat, dan memantau kehadiran mahasiswa secara efisien. Aplikasi ini dibangun menggunakan bahasa pemrograman **Go (Golang)** sebagai pemenuhan Tugas Besar mata kuliah Algoritma dan Pemrograman 2 (TuBes AlPro 2), program studi S1 Informatika, Fakultas Informatika, Telkom University.
 
 Aplikasi ini mengimplementasikan konsep struktur data statis (Array of Structs) beserta algoritma pencarian (*Searching*) dan pengurutan (*Sorting*) secara mendalam tanpa mengandalkan *package* bawaan Golang untuk proses logikanya.
 
